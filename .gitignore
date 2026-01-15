@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+# Large Ephemeris data - usually better to fetch at runtime but keeping local for now
+# de421.bsp 
+test_report.pdf
+.pytest_cache/
+.vscode/
+.idea/
