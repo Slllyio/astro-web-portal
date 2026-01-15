@@ -27,12 +27,17 @@ def generate_astrological_report(dob):
     Generates complete astrological report for given DOB.
     Returns: (narrative_dict, sample_count)
     """
-    # Initialize services
-    service = SkyfieldAstrologyService()
-    generator = MatrixGenerator(service)
-    purifier = ChartPurifier()
-    analyzer = MatrixAnalyzer()
-    
+# Initialize services globally to avoid reloading on every request
+service = SkyfieldAstrologyService()
+generator = MatrixGenerator(service)
+purifier = ChartPurifier()
+analyzer = MatrixAnalyzer()
+
+def generate_astrological_report(dob):
+    """
+    Generates complete astrological report for given DOB.
+    Returns: (narrative_dict, sample_count)
+    """
     # Generate matrix
     matrix = generator.generate_matrix(dob)
     
