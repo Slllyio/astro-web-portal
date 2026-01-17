@@ -110,10 +110,22 @@ class AstrologicalInterpreter:
         "Ketu": 5      # Leo
     }
 
+    
     def predict_transit_impacts(self, rashi_data: Dict[str, Any]) -> List[str]:
         # Legacy method placeholder or remove if unused. 
         # Kept for compatibility but not primary anymore.
         pass
+
+    def __init__(self):
+        # Initialize LLM Engine
+        from .llm_engine import LLMEngine
+        from ..config import OPENAI_API_KEY
+        self.llm = None
+        if OPENAI_API_KEY:
+            try:
+                self.llm = LLMEngine(OPENAI_API_KEY)
+            except Exception:
+                print("LLM Init Failed (Invalid Key or Library missing)")
 
     # Future Major Transits (Hardcoded for Demo Accuracy)
     # Source: Standard Ephemeris
@@ -445,9 +457,16 @@ class AstrologicalInterpreter:
         # 12. Dasha Periods
         narrative["dasha_periods"] = analysis_results.get("dasha_periods", [])
         
+        
         # 13. Personalized Remedies (based on weak planets)
         planetary_strength = analysis_results.get("planetary_strength", {})
         narrative["remedies"] = self.generate_remedies(planetary_strength)
+        
+        # 14. AI Deep Dive (If available)
+        if self.llm:
+            narrative["ai_insight"] = self.llm.generate_insight(narrative)
+        else:
+            narrative["ai_insight"] = None
 
         return narrative
     

@@ -1,5 +1,9 @@
 
+
+import os
 # Configuration for Temporal & Spatial Sampling Engine
+
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 # Temporal Segmentation: 24 intervals of 60 minutes = 24 hours (Optimized for Free Tier)
 TIME_SLICES = 24
