@@ -47,35 +47,14 @@
 
         <!-- Section: Architecture of Character (Chart) -->
         <section class="card-glass">
-            <div class="grid-2">
-                <div>
-                    <h2>Architecture of Character</h2>
-                    <p style="margin-bottom:20px; line-height:1.6;">
-                        Your planetary alignment reveals a unique distribution of energy. This chart maps your inherent
-                        strengths across key dimensions of life.
-                    </p>
-                    {% if narrative.power_rank %}
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="font-size: 1.2rem; color: var(--gold-light);">Kingmaker Planet</h3>
-                        <p>{{ narrative.power_rank.kingmaker.split('(')[0] }}</p>
-                    </div>
-                    {% endif %}
-
-                    {% if narrative.universal_identity %}
-                    <div style="margin-bottom: 20px;">
-                        <h3 style="font-size: 1.2rem; color: var(--gold-light);">Core Identity</h3>
-                        <ul style="list-style: none; padding-left: 0;">
-                            {% for item in narrative.universal_identity[:2] %}
-                            <li style="margin-bottom: 8px; font-style: italic;">"{{ item.split(':')[0] | replace('*',
-                                '') }}"</li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="chart-container-wrapper">
-                    <canvas id="radarChart"></canvas>
-                </div>
+            <h2>Architecture of Character</h2>
+            <p
+                style="margin-bottom:30px; line-height:1.6; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Your planetary alignment reveals a unique distribution of energy. This chart maps your inherent
+                strengths across key dimensions of life.
+            </p>
+            <div class="chart-container-wrapper" style="max-width: 700px; margin: 0 auto;">
+                <canvas id="radarChart"></canvas>
             </div>
         </section>
 
@@ -195,6 +174,9 @@
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                devicePixelRatio: 2, // Higher resolution for sharper rendering
                 scales: {
                     r: {
                         angleLines: {
