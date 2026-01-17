@@ -119,13 +119,15 @@ class AstrologicalInterpreter:
     def __init__(self):
         # Initialize LLM Engine
         from .llm_engine import LLMEngine
-        from ..config import OPENAI_API_KEY
+        import os
+        api_key = os.environ.get("OPENAI_API_KEY")
+        
         self.llm = None
-        if OPENAI_API_KEY:
+        if api_key:
             try:
-                self.llm = LLMEngine(OPENAI_API_KEY)
-            except Exception:
-                print("LLM Init Failed (Invalid Key or Library missing)")
+                self.llm = LLMEngine(api_key)
+            except Exception as e:
+                print(f"LLM Init Failed: {e}")
 
     # Future Major Transits (Hardcoded for Demo Accuracy)
     # Source: Standard Ephemeris
