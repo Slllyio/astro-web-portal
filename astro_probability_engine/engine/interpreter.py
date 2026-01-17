@@ -312,18 +312,10 @@ class AstrologicalInterpreter:
 
             p_nature_info = self.PLANET_NATURE.get(planet, {"karaka": "Influence", "desc": "General Energy"})
             
-            # Dynamic Synthesis Template
-            interpretation_synthesis = (
-                f"For this cohort, **{p_nature_info['karaka']}** is channeled through **{nak_name}**. "
-                f"This creates a unique 'Sanchita' signature where {p_nature_info['desc']} acts to fulfill the *{shakti_segment}*. "
-                f"Basically, your generation approaches **{planet}** matters not directly, but through the {nak_name.split('(')[0].strip()} style—using {shakti_segment} to achieve its ends."
-            )
-            
+            # Concise interpretation
             entry = (
-                f"**{planet} in {nak_name}**\n"
-                f"- *Core Theme*: {p_nature_info['karaka']} - {p_nature_info['desc']}\n"
-                f"- *Nakshatra Influence*: {raw_nak_text}\n"
-                f"- *Interpretation*: {interpretation_synthesis}"
+                f"**{planet} in {nak_name}** - {p_nature_info['karaka']}: "
+                f"{p_nature_info['desc']} Your generation channels {planet}'s energy through {shakti_segment}"
             )
             narrative["universal_identity"].append(entry)
                 
