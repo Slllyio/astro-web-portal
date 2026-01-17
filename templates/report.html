@@ -181,7 +181,7 @@
                         style="margin-bottom: 15px; padding: 12px; background: rgba(0,0,0,0.2); border-left: 2px solid var(--gold); border-radius: 6px;">
                         {% set parts = item.split(':', 1) %}
                         {% if parts|length == 2 %}
-                        <strong style="color: var(--gold-light);">{{ parts[0] | replace('✦', '').strip() }}</strong>
+                        <strong style="color: var(--gold-light);">{{ parts[0].replace('✦', '').strip() }}</strong>
                         <p style="margin-top: 5px; line-height: 1.5;">{{ parts[1].strip() }}</p>
                         {% else %}
                         {{ item | replace('✦', '') }}
@@ -196,7 +196,7 @@
                         style="margin-bottom: 15px; padding: 12px; background: rgba(0,0,0,0.2); border-left: 2px solid #667eea; border-radius: 6px;">
                         {% set parts = item.split(':', 1) %}
                         {% if parts|length == 2 %}
-                        <strong style="color: #a78bfa;">{{ parts[0] | replace('✦', '').strip() }}</strong>
+                        <strong style="color: #a78bfa;">{{ parts[0].replace('✦', '').strip() }}</strong>
                         <p style="margin-top: 5px; line-height: 1.5;">{{ parts[1].strip() }}</p>
                         {% else %}
                         {{ item | replace('✦', '') }}
