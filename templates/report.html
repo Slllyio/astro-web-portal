@@ -120,7 +120,7 @@
                 Favorable geographical directions based on elemental energy distribution.
             </p>
             <div class="grid-2">
-                {% for direction, score in narrative.directional_strength.scores.items() %}
+                {% for direction, score in narrative.directional_strength.scores|dictsort %}
                 <div style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; text-align: center;">
                     <div style="font-size: 1.2rem; color: var(--gold-light); margin-bottom: 5px;">{{
                         direction.split('(')[0].strip() }}</div>
