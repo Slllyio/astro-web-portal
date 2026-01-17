@@ -79,6 +79,29 @@
             </div>
         </section>
 
+        <!-- Section: Universal Identity (Detailed) -->
+        {% if narrative.universal_identity %}
+        <section class="card-glass">
+            <h2>The Universal Identity (Fixed Promise)</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7;">
+                These are the traits common to <em>everyone</em> born on this date. They represent the 'Soul Code' of
+                this cohort.
+            </p>
+            {% for item in narrative.universal_identity %}
+            <div
+                style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--gold); border-radius: 8px;">
+                {% set parts = item.split(':', 1) %}
+                {% if parts|length == 2 %}
+                <h3 style="font-size: 1.1rem; color: var(--gold-light); margin-bottom: 8px;">{{ parts[0].strip() }}</h3>
+                <p style="line-height: 1.6;">{{ parts[1].strip() }}</p>
+                {% else %}
+                <p style="line-height: 1.6;">{{ item }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
         <!-- Section: The Narrative -->
         <section class="card-glass">
             <h2>Cosmic Narrative</h2>
