@@ -438,5 +438,43 @@ class AstrologicalInterpreter:
         
         # 10. Life Activation Windows
         narrative["life_activation_windows"] = analysis_results.get("life_activation_windows", [])
+        
+        # 11. Planetary Strength
+        narrative["planetary_strength"] = analysis_results.get("planetary_strength", {})
+        
+        # 12. Dasha Periods
+        narrative["dasha_periods"] = analysis_results.get("dasha_periods", [])
+        
+        # 13. Personalized Remedies (based on weak planets)
+        planetary_strength = analysis_results.get("planetary_strength", {})
+        narrative["remedies"] = self.generate_remedies(planetary_strength)
 
         return narrative
+    
+    def generate_remedies(self, planetary_strength: Dict[str, int]) -> List[Dict[str, Any]]:
+        """
+        Generates personalized remedies based on weak planets (strength < 50).
+        """
+        remedy_map = {
+            "Sun": {"gemstone": "Ruby", "mantra": "Om Suryaya Namaha", "color": "Orange/Red", "day": "Sunday"},
+            "Moon": {"gemstone": "Pearl", "mantra": "Om Chandraya Namaha", "color": "White/Silver", "day": "Monday"},
+            "Mars": {"gemstone": "Red Coral", "mantra": "Om Mangalaya Namaha", "color": "Red", "day": "Tuesday"},
+            "Mercury": {"gemstone": "Emerald", "mantra": "Om Budhaya Namaha", "color": "Green", "day": "Wednesday"},
+            "Jupiter": {"gemstone": "Yellow Sapphire", "mantra": "Om Gurave Namaha", "color": "Yellow", "day": "Thursday"},
+            "Venus": {"gemstone": "Diamond/White Sapphire", "mantra": "Om Shukraya Namaha", "color": "White", "day": "Friday"},
+            "Saturn": {"gemstone": "Blue Sapphire", "mantra": "Om Shanaye Namaha", "color": "Blue/Black", "day": "Saturday"}
+        }
+        
+        weak_planets = [(p, s) for p, s in planetary_strength.items() if s < 50]
+        weak_planets.sort(key=lambda x: x[1])  # Sort by strength ascending
+        
+        remedies = []
+        for planet, strength in weak_planets[:3]:  # Top 3 weakest
+            if planet in remedy_map:
+                remedy = remedy_map[planet].copy()
+                remedy["planet"] = planet
+                remedy["strength"] = strength
+                remedies.append(remedy)
+                
+        return remedies
+

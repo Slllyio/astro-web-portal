@@ -401,6 +401,16 @@ class MatrixAnalyzer:
         life_windows = []
         if dob:
             life_windows = self.calculate_life_activation_windows(matrix, rashi_stats, dob)
+        
+        # Phase 2: Planetary Strength
+        planetary_strength = self.calculate_planetary_strength(matrix)
+        
+        # Phase 3: Dasha Timeline  
+        dasha_periods = []
+        if dob:
+            ref = matrix[0]
+            moon_nak = ref.chart.planets["Moon"].nakshatra
+            dasha_periods = self.calculate_vimshottari_dasha(dob, moon_nak)
                 
         # 5. Narrative Generation
         narrative = self.interpreter.generate_narrative({
@@ -416,7 +426,9 @@ class MatrixAnalyzer:
             "directional_strength": directional_strength,
             "yogas": yogas,
             "tithi_info": tithi_info,
-            "life_activation_windows": life_windows
+            "life_activation_windows": life_windows,
+            "planetary_strength": planetary_strength,
+            "dasha_periods": dasha_periods
         })
 
         return {
@@ -424,3 +436,87 @@ class MatrixAnalyzer:
             "narrative": narrative,
             "yogas_debug": yogas
         }
+    
+    def calculate_planetary_strength(self, matrix: list) -> Dict[str, int]:
+        """
+        Simplified Shad Bala - calculates relative strength of each planet.
+        Returns scores 0-100 for each planet.
+        """
+        ref = matrix[0].chart
+        strengths = {}
+        
+        # Dignity scores based on rashi position
+        dignity_map = {
+            "Sun": {5: 20, 1: 15, 4: -10, 7: -10},  # Exalted in Leo, debilitated in Libra
+            "Moon": {2: 20, 8: -10},  # Exalted in Taurus
+            "Mars": {10: 20, 4: -10},  # Exalted in Capricorn
+            "Mercury": {6: 20, 12: -10},  # Exalted in Virgo
+            "Jupiter": {4: 20, 10: -10},  # Exalted in Cancer
+            "Venus": {12: 20, 6: -10},  # Exalted in Pisces
+            "Saturn": {7: 20, 1: -10}  # Exalted in Libra
+        }
+        
+        for planet in ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"]:
+            score = 50  # Base score
+            p_data = ref.planets[planet]
+            rashi = p_data.rashi
+            
+            # Add dignity
+            if planet in dignity_map and rashi in dignity_map[planet]:
+                score += dignity_map[planet][rashi]
+            
+            # Add house strength (based on BAV contribution across all houses)
+            total_bav = sum([h.bav_scores.get(planet, 0) for h in ref.houses.values()])
+            score += min(30, total_bav)  # Cap at 30
+            
+            # Normalize to 0-100
+            strengths[planet] = max(0, min(100, score))
+            
+        return strengths
+    
+    def calculate_vimshottari_dasha(self, dob, moon_nakshatra: int) -> List[Dict[str, Any]]:
+        """
+        Calculates Vimshottari Dasha periods.
+        Returns list of {planet, start_age, end_age, duration_years}
+        """
+        from datetime import date
+        
+        # Dasha sequence and durations (in years)
+        dasha_sequence = [
+            ("Ketu", 7), ("Venus", 20), ("Sun", 6), ("Moon", 10),
+            ("Mars", 7), ("Rahu", 18), ("Jupiter", 16), ("Saturn", 19), ("Mercury", 17)
+        ]
+        
+        # Nakshatra to starting Dasha lord
+        nak_to_lord = {
+            1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 5, 7: 6, 8: 7, 9: 8,  # Ashwini to Ashlesha
+            10: 0, 11: 1, 12: 2, 13: 3, 14: 4, 15: 5, 16: 6, 17: 7, 18: 8,  # Magha to Jyeshtha
+            19: 0, 20: 1, 21: 2, 22: 3, 23: 4, 24: 5, 25: 6, 26: 7, 27: 8   # Mula to Revati
+        }
+        
+        start_index = nak_to_lord.get(moon_nakshatra, 0)
+        
+        periods = []
+        current_age = 0
+        
+        # Generate periods for 120 years (full cycle)
+        for i in range(9):
+            idx = (start_index + i) % 9
+            planet, duration = dasha_sequence[idx]
+            
+            periods.append({
+                "planet": planet,
+                "start_age": current_age,
+                "end_age": current_age + duration,
+                "duration_years": duration
+            })
+            
+            current_age += duration
+            
+        # Return only periods up to age 90 or next 60 years
+        today = date.today()
+        current_user_age = today.year - dob.year
+        relevant_periods = [p for p in periods if p['end_age'] >= current_user_age and p['start_age'] <= current_user_age + 60]
+        
+        return relevant_periods[:8]  # Limit to next 8 periods
+

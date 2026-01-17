@@ -81,6 +81,87 @@
         </section>
         {% endif %}
 
+        <!-- Section: Universal Yogas -->
+        {% if narrative.yogas %}
+        <section class="card-glass">
+            <h2>Universal Yogas</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
+                Special planetary combinations present for your generation.
+            </p>
+            <div class="grid-2">
+                {% for yoga in narrative.yogas %}
+                <div
+                    style="padding: 20px; background: rgba(212, 175, 55, 0.1); border-left: 3px solid var(--gold); border-radius: 8px;">
+                    <h3 style="font-size: 1.1rem; color: var(--gold-light); margin-bottom: 10px;">{{ yoga.name }}</h3>
+                    <p style="line-height: 1.6;">{{ yoga.desc }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Section: Lunar Day (Tithi) -->
+        {% if narrative.tithi_info %}
+        <section class="card-glass">
+            <h2>Lunar Day (Tithi)</h2>
+            <div style="text-align: center; padding: 20px; background: rgba(167, 139, 250, 0.1); border-radius: 12px;">
+                <h3 style="font-size: 1.8rem; color: #a78bfa; margin-bottom: 10px;">{{ narrative.tithi_info.tithi }}
+                </h3>
+                <p style="line-height: 1.7; max-width: 600px; margin: 0 auto;">{{ narrative.tithi_info.meaning }}</p>
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Section: Directional Strength -->
+        {% if narrative.directional_strength %}
+        <section class="card-glass">
+            <h2>Directional Strength</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
+                Favorable geographical directions based on elemental energy distribution.
+            </p>
+            <div class="grid-2">
+                {% for direction, score in narrative.directional_strength.scores.items() %}
+                <div style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; text-align: center;">
+                    <div style="font-size: 1.2rem; color: var(--gold-light); margin-bottom: 5px;">{{
+                        direction.split('(')[0].strip() }}</div>
+                    <div
+                        style="font-size: 2rem; font-weight: bold; color: {% if direction == narrative.directional_strength.winner %}var(--gold){% else %}var(--text-secondary){% endif %};">
+                        {{ score }}</div>
+                    <div style="font-size: 0.9rem; color: var(--text-secondary);">{{
+                        direction.split('(')[1].replace(')', '') if '(' in direction else '' }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div
+                style="margin-top: 20px; text-align: center; padding: 15px; background: rgba(212, 175, 55, 0.1); border-radius: 8px;">
+                <strong style="color: var(--gold);">Strongest Direction:</strong> {{
+                narrative.directional_strength.winner }} ({{ narrative.directional_strength.winner_score }})
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Section: Life Activation Windows -->
+        {% if narrative.life_activation_windows %}
+        <section class="card-glass">
+            <h2>Life Activation Windows</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
+                Future periods when major planets transit through your power zones.
+            </p>
+            <div class="timeline">
+                {% for window in narrative.life_activation_windows[:6] %}
+                <div class="timeline-item">
+                    <div class="timeline-date">{{ window.entry_date }}</div>
+                    <div class="timeline-title">{{ window.planet }} Activation</div>
+                    <div style="color: var(--gold-light); font-weight: bold; margin-bottom: 5px;">Age {{ window.age }}
+                    </div>
+                    <p>{{ window.planet }} enters a power zone for {{ window.duration_months }} months. Significance: {{
+                        window.significance }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
         <!-- Section: The Narrative -->
         <section class="card-glass">
             <h2>Cosmic Narrative</h2>
@@ -126,6 +207,49 @@
             </div>
         </section>
 
+        <!-- Section: Planetary Strength -->>
+        {% if narrative.planetary_strength %}
+        <section class="card-glass">
+            <h2>Planetary Strength (Shad Bala)</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
+                Relative power of each planet in your chart. Higher scores indicate allies; lower scores need support.
+            </p>
+            {% for planet, strength in narrative.planetary_strength.items() %}
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="font-weight: 600;">{{ planet }}</span>
+                    <span style="color: var(--gold-light);">{{ strength }}</span>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); border-radius: 10px; overflow: hidden; height: 12px;">
+                    <div
+                        style="background: linear-gradient(90deg, {% if strength >= 70 %}var(--gold){% elif strength >= 50 %}#a78bfa{% else %}#667eea{% endif %}, rgba(212, 175, 55, 0.3)); width: {{ strength }}%; height: 100%; border-radius: 10px; transition: width 0.3s;">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Section: Dasha Timeline -->{%
+        if narrative.dasha_periods %}
+        <section class="card-glass">
+            <h2>Dasha Lifecycle Periods</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
+                Planetary ruling periods that define different phases of life.
+            </p>
+            <div class="timeline">
+                {% for period in narrative.dasha_periods %}
+                <div class="timeline-item">
+                    <div class="timeline-date">Age {{ period.start_age }}-{{ period.end_age }}</div>
+                    <div class="timeline-title">{{ period.planet }} Maha Dasha</div>
+                    <p>{{ period.duration_years }} years ruled by {{ period.planet }}. This period emphasizes the
+                        qualities and domains governed by this planet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
         <!-- Section: Timeline -->
         <section class="card-glass">
             <h2>The Path Forward (2026-2028)</h2>
@@ -140,6 +264,31 @@
                 {% endfor %}
             </div>
         </section>
+
+        <!-- Section: Personalized Remedies -->
+        {% if narrative.remedies %}
+        <section class="card-glass">
+            <h2>Personalized Remedies</h2>
+            <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
+                Recommendations to strengthen weak planetary influences in your chart.
+            </p>
+            <div class="grid-2">
+                {% for remedy in narrative.remedies %}
+                <div
+                    style="padding: 20px; background: rgba(167, 139, 250, 0.1); border-left: 3px solid #a78bfa; border-radius: 8px;">
+                    <h3 style="font-size: 1.1rem; color: #a78bfa; margin-bottom: 15px;">{{ remedy.planet }} (Strength:
+                        {{ remedy.strength }})</h3>
+                    <div style="line-height: 1.8;">
+                        <div><strong style="color: var(--gold-light);">Gemstone:</strong> {{ remedy.gemstone }}</div>
+                        <div><strong style="color: var(--gold-light);">Mantra:</strong> {{ remedy.mantra }}</div>
+                        <div><strong style="color: var(--gold-light);">Color:</strong> {{ remedy.color }}</div>
+                        <div><strong style="color: var(--gold-light);">Favorable Day:</strong> {{ remedy.day }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
 
         <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
             <button class="btn-primary" onclick="window.print()">Print / Save PDF</button>
