@@ -29,8 +29,17 @@ document.getElementById('reportForm').addEventListener('submit', async function 
         });
 
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to generate report');
+            let errorMessage = 'Failed to generate report';
+            try {
+                const error = await response.json();
+                errorMessage = error.error || errorMessage;
+            } catch (e) {
+                // If parsing JSON fails, it might be an HTML error page (502/504)
+                const text = await response.text();
+                console.error("Non-JSON error response:", text);
+                errorMessage = `Server Error (${response.status}). Please try again later.`;
+            }
+            throw new Error(errorMessage);
         }
 
         // Get HTML content

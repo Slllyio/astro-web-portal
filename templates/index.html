@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astrological Probability Engine</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -16,21 +18,15 @@
         <main>
             <div class="card">
                 <h2>Generate Your Report</h2>
-                <p class="description">Enter your date of birth to unlock the astrological patterns that shaped your cohort's destiny.</p>
-                
+                <p class="description">Enter your date of birth to unlock the astrological patterns that shaped your
+                    cohort's destiny.</p>
+
                 <form id="reportForm">
                     <div class="form-group">
                         <label for="dob">Date of Birth</label>
-                        <input 
-                            type="date" 
-                            id="dob" 
-                            name="dob" 
-                            required
-                            max="2025-12-31"
-                            value="1989-10-12"
-                        >
+                        <input type="date" id="dob" name="dob" required max="2025-12-31" value="1989-10-12">
                     </div>
-                    
+
                     <button type="submit" id="generateBtn" class="btn-primary">
                         <span id="btnText">Generate Report</span>
                         <div id="spinner" class="spinner hidden"></div>
@@ -39,15 +35,14 @@
 
                 <div id="error" class="error hidden"></div>
                 <div id="success" class="success hidden">
-                    ✅ Report generated successfully! Download started.
+                    ✅ Report ready! Opening in new tab...
                 </div>
             </div>
 
             <div class="features">
                 <div class="feature">
-                    <div class="icon">📊</div>
-                    <h3>1920 Chart Analysis</h3>
-                    <p>Brute-force statistical analysis across time & space</p>
+                    <h3 style="color: #D4AF37; margin-bottom: 5px;">Universal Chart Analysis</h3>
+                    <p>Statistical analysis across time & space (120 Samples)</p>
                 </div>
                 <div class="feature">
                     <div class="icon">🔮</div>
@@ -69,4 +64,5 @@
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
+
 </html>
