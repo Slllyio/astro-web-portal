@@ -214,7 +214,7 @@
             <p style="margin-bottom: 25px; color: var(--text-secondary); line-height: 1.7; text-align: center;">
                 Relative power of each planet in your chart. Higher scores indicate allies; lower scores need support.
             </p>
-            {% for planet, strength in narrative.planetary_strength.items() %}
+            {% for planet, strength in narrative.planetary_strength|dictsort %}
             <div style="margin-bottom: 20px;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                     <span style="font-weight: 600;">{{ planet }}</span>
