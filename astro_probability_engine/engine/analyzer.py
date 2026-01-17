@@ -287,15 +287,24 @@ class MatrixAnalyzer:
         """
         sample_count = len(matrix)
         
-        # 1. House Analysis
+        # 1. House Analysis (SAV & Shodhita)
         house_stats = {}
         for h_idx in range(1, 13):
-            scores = [entry.chart.houses[h_idx].sav_score for entry in matrix] 
+            sav_scores = [entry.chart.houses[h_idx].sav_score for entry in matrix] 
+            sho_scores = [entry.chart.houses[h_idx].shodhita_score for entry in matrix]
+            
+            # Stability: % of charts that have the most common score
+            def calc_stability(scores):
+                if not scores: return 0.0
+                most_common_count = scores.count(statistics.mode(scores))
+                return (most_common_count / len(scores)) * 100
+                
             house_stats[h_idx] = {
-                "mean": statistics.mean(scores),
-                "stdev": statistics.stdev(scores) if len(scores) > 1 else 0,
-                "min": min(scores),
-                "max": max(scores)
+                "sav_mean": statistics.mean(sav_scores),
+                "sav_stdev": statistics.stdev(sav_scores) if len(sav_scores) > 1 else 0,
+                "sav_stability": calc_stability(sav_scores),
+                "sho_mean": statistics.mean(sho_scores),
+                "sho_stability": calc_stability(sho_scores)
             }
 
         # 2. Rashi & Planetary Power Analysis
@@ -304,7 +313,10 @@ class MatrixAnalyzer:
         
         # Calculate Planet Power from first chart (BAV contribution is constant per day usually)
         ref_chart = matrix[0].chart
+        rashi_bav_breakdown = {} # rashi_id -> {p_name: score}
+
         for h in ref_chart.houses.values():
+            rashi_bav_breakdown[h.rashi_id] = h.bav_scores
             for p_name, score in h.bav_scores.items():
                 if score > 0:
                     planet_power[p_name] = planet_power.get(p_name, 0) + 1
@@ -321,15 +333,42 @@ class MatrixAnalyzer:
             9: "Jupiter", 12: "Jupiter", 10: "Saturn", 11: "Saturn"
         }
         for r_id in range(1, 13):
-            scores = rashi_map[r_id]
-            mean_score = statistics.mean(scores)
-            rashi_stats[r_id] = {
-                "mean_score": mean_score,
-                "key_insights": {
-                    "strength_tier": "High" if mean_score > 30 else "Avg" if mean_score > 25 else "Low",
-                    "primary_driver": lords.get(r_id, "Unknown")
+            # FIXED scores (Universal DNA)
+            fixed_sav_scores = []
+            fixed_sho_scores = []
+            # TOTAL scores (Daily Variance)
+            total_sav_scores = []
+            
+            for entry in matrix:
+                for h in entry.chart.houses.values():
+                    if h.rashi_id == r_id:
+                        fixed_sav_scores.append(h.fixed_sav)
+                        fixed_sho_scores.append(h.fixed_shodhita)
+                        total_sav_scores.append(h.sav_score)
+            
+            if fixed_sav_scores:
+                mean_fixed = sum(fixed_sav_scores) / len(fixed_sav_scores)
+                mean_sho = sum(fixed_sho_scores) / len(fixed_sho_scores)
+                
+                # Stability of FIXED scores (should be high)
+                def calc_stability(scores):
+                    if not scores: return 0.0
+                    mode_val = statistics.mode(scores)
+                    return (scores.count(mode_val) / len(scores)) * 100
+                    
+                stability_pct = calc_stability(fixed_sav_scores)
+                
+                rashi_stats[r_id] = {
+                    "mean_score": mean_fixed, # Using fixed as the base "Identity"
+                    "mean_shodhita": mean_sho,
+                    "total_sav_mean": sum(total_sav_scores) / len(total_sav_scores),
+                    "stability_pct": stability_pct,
+                    "key_insights": {
+                        "strength_tier": "High" if mean_fixed > 30 else "Avg" if mean_fixed > 25 else "Low",
+                        "primary_driver": lords.get(r_id, "Unknown"),
+                        "fixed_status": "FIXED" if stability_pct >= 70 else "VARIABLE"
+                    }
                 }
-            }
             
         # 3. Universal Nakshatras
         reference_entry = matrix[0]
@@ -367,6 +406,7 @@ class MatrixAnalyzer:
         narrative = self.interpreter.generate_narrative({
             "house_analysis": house_stats,
             "rashi_analysis": rashi_stats,
+            "bav_breakdown": rashi_bav_breakdown,
             "planet_power": planet_power, 
             "common_links": {
                 "nakshatra_positions": universal_nakshatras

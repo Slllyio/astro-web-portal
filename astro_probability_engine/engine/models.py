@@ -10,7 +10,8 @@ class PlanetPosition:
     rashi: int # 1-12
     nakshatra: int # 1-27
     pada: int # 1-4
-    kakshya: int # 1-8 (optional)
+    kakshya: int # 1-8
+    kakshya_ruler: str # Ruler of the 3.75 deg segment
 
 @dataclass
 class HouseData:
@@ -18,6 +19,9 @@ class HouseData:
     rashi_id: int # 1-12 (Aries=1)
     bav_scores: Dict[str, int] # Planet name -> bindu count
     sav_score: int
+    shodhita_score: int = 0 # Phase 3: Reduced score
+    fixed_sav: int = 0
+    fixed_shodhita: int = 0
     shodhya_pinda: Optional[float] = 0.0 # Calculated later
 
 @dataclass

@@ -35,3 +35,4 @@ HOUSES_COUNT = 12
 PLANETS = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"]
 KAKSHYA_ZONES_PER_RASHI = 8
 KAKSHYA_DEGREES = 3.75 # 30 degrees / 8
+KAKSHYA_RULERS = ["Saturn", "Jupiter", "Mars", "Sun", "Venus", "Mercury", "Moon", "Lagna"]

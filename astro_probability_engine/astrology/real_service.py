@@ -7,7 +7,7 @@ from skyfield import almanac
 from engine.models import ChartData, PlanetPosition, HouseData
 from astrology.interface import AstrologyService
 from astrology.bav_rules import BAVCalculator
-from config import PLANETS, KAKSHYA_DEGREES
+from config import PLANETS, KAKSHYA_DEGREES, KAKSHYA_RULERS
 
 class SkyfieldAstrologyService(AstrologyService):
     def __init__(self):
@@ -79,16 +79,18 @@ class SkyfieldAstrologyService(AstrologyService):
             rem_deg = sidereal_deg % 30
             nakshatra = int(sidereal_deg / 13.333333) + 1
             pada = int((sidereal_deg % 13.333333) / 3.333333) + 1
-            kakshya = int(rem_deg / KAKSHYA_DEGREES) + 1
+            kakshya_idx = int(rem_deg / KAKSHYA_DEGREES)
+            kakshya_ruler = KAKSHYA_RULERS[kakshya_idx]
             
             planets_data[p_name] = PlanetPosition(
                 name=p_name,
                 longitude=sidereal_deg,
-                speed=0.0, # TODO: Calc speed by checking t+1hr (not critical for BAV)
+                speed=0.0, 
                 rashi=r_idx,
                 nakshatra=nakshatra,
                 pada=pada,
-                kakshya=kakshya
+                kakshya=kakshya_idx + 1,
+                kakshya_ruler=kakshya_ruler
             )
 
         # 4. Calculate Lagna (Ascendant)
@@ -134,11 +136,15 @@ class SkyfieldAstrologyService(AstrologyService):
         
         positions["Lagna"] = lagna_rashi
         
-        # 5. Generate BAV/SAV using RULES ENGINE
-        print(f"Calculating SAV for Positions: {positions}")
+        # 5. Generate BAV/SAV (Total)
         sav_data = BAVCalculator.calculate_sarvashtakavarga(positions)
+        shodhita_sav = BAVCalculator.calculate_shodhita_sav(positions)
         
-        # 6. Map Houses
+        # 6. Generate FIXED SAV (Exclude Lagna)
+        fixed_sav_data = BAVCalculator.calculate_sarvashtakavarga(positions, exclude_list=["Lagna"])
+        fixed_shodhita_sav = BAVCalculator.calculate_shodhita_sav(positions, exclude_list=["Lagna"])
+
+        # 7. Map Houses
         houses = {}
         for h_num in range(1, 13):
            # House 1 = Lagna Rashi
@@ -150,6 +156,9 @@ class SkyfieldAstrologyService(AstrologyService):
                house_num=h_num,
                rashi_id=target_rashi_id,
                sav_score=r_data["total"],
+               shodhita_score=shodhita_sav[target_rashi_id],
+               fixed_sav=fixed_sav_data[target_rashi_id]["total"],
+               fixed_shodhita=fixed_shodhita_sav[target_rashi_id],
                bav_scores=r_data["breakdown"]
            )
            

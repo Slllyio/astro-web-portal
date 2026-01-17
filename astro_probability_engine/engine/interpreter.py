@@ -18,86 +18,86 @@ class AstrologicalInterpreter:
     }
     
     NAKSHATRA_MEANINGS = {
-        1: "Ashwini (The Horsemen): Swift action, healing, pioneering energy. Ruled by Ashwini Kumaras.",
-        2: "Bharani (The Bearer): Power of restraint, carrying burden, transformation. Ruled by Yama.",
-        3: "Krittika (The Cutter): Sharp discernment, burning, purification. Ruled by Agni.",
-        4: "Rohini (The Red One): Growth, fertility, beauty, material desires. Ruled by Brahma.",
-        5: "Mrigashira (The Deer's Head): Searching, exploration, restlessness, gentleness. Ruled by Soma.",
-        6: "Ardra (The Moist One): Power of effort and achievement, often through storm/struggle. Ruled by Rudra.",
-        7: "Punarvasu (The Return of Light): Renewal, restoration, repetition. Ruled by Aditi.",
-        8: "Pushya (The Nourisher): Nourishment, support, spiritual growth. Ruled by Brihaspati.",
-        9: "Ashlesha (The Embracer): Coiling energy, kundalini, secretive wisdom. Ruled by Nagas.",
-        10: "Magha (The Mighty): Ancestral power, throne, regal authority. Ruled by Pitris.",
-        11: "Purva Phalguni (The Former Red One): Pleasure, creativity, relationships. Ruled by Bhaga.",
-        12: "Uttara Phalguni (The Latter Red One): Wealth through relationships, kindness, patronage. Ruled by Aryaman.",
-        13: "Hasta (The Hand): Skilled hands, craftmanship, grasping nature. Ruled by Savitar.",
-        14: "Chitra (The Bright): The Architect. Creativity, design, visual aesthetics. Ruled by Tvashtar.",
-        15: "Swati (The Sword): Independence, flexibility, trade winds. Ruled by Vayu.",
-        16: "Vishakha (The Forked Branch): Goal-oriented, determination, split energies. Ruled by Indra-Agni.",
-        17: "Anuradha (The Disciple): Devotion, friendship, rising from ashes. Ruled by Mitra.",
-        18: "Jyeshtha (The Eldest): Seniority, protection, umbrella, eldest child. Ruled by Indra.",
-        19: "Mula (The Root): Foundational, digging deep, destruction before creation. Ruled by Nirriti.",
-        20: "Purva Ashadha (The Invincible): Unbeatable execution, declaration of war, improvement. Ruled by Apah (Water).",
-        21: "Uttara Ashadha (The Universal): Permanent victory, firm alliances. Ruled by Vishvadevas.",
-        22: "Shravana (The Ear): Listening, learning, connection. Ruled by Vishnu.",
-        23: "Dhanishta (The Wealthiest): Wealth, music, rhythm, fame. Ruled by Vasus.",
-        24: "Shatabhisha (The Hundred Healers): Healing, secrecy, mystery. Ruled by Varuna.",
-        25: "Purva Bhadrapada (The Former Happy Feet): Intensity, fire, spiritual transformation. Ruled by Aja Ekapada.",
-        26: "Uttara Bhadrapada (The Latter Happy Feet): Depth, cosmic rain, serpent energy. Ruled by Ahir Budhnya.",
-        27: "Revati (The Wealthy): Nourishment, safe journey, final liberation. Ruled by Pushan."
+        1: "Ashwini (The Star of Transport): Ruled by Ketu. Symbolized by a Horse's Head. **Shakti**: *Cid Vyapa Shakti* (Power to quickly reach things). \n**Vedic Insight**: Persons born with planets here have a pioneering spirit and healing energy (Ashwini Kumaras). It indicates a soul eager for new beginnings and swift action.",
+        2: "Bharani (The Star of Restraint): Ruled by Venus. Symbolized by the Yoni. **Shakti**: *Apabharani Shakti* (Power to carry things away). \n**Vedic Insight**: Represents the struggle between opposites (Life/Death). It grants the power to endure extreme contradictions and birth new creations through labor.",
+        3: "Krittika (The Star of Fire): Ruled by Sun. Symbolized by a Razor. **Shakti**: *Dahana Shakti* (Power to burn and purify). \n**Vedic Insight**: The 'Cutter'. It represents sharp intelligence and a critical nature. It burns away impurities to reveal the truth.",
+        4: "Rohini (The Star of Ascent): Ruled by Moon. Symbolized by a Chariot. **Shakti**: *Rohana Shakti* (Power to make things grow). \n**Vedic Insight**: The favorite of the Moon. It represents fertility, agriculture, and the ability to manifest material desires.",
+        5: "Mrigashira (The Searching Star): Ruled by Mars. Symbolized by a Deer's Head. **Shakti**: *Prinana Shakti* (Power to give fulfillment). \n**Vedic Insight**: Represents the spiritual warrior searching for soma (immortality). It grants a restless, inquisitive, and sensitive nature.",
+        6: "Ardra (The Star of Sorrow): Ruled by Rahu. Symbolized by a Teardrop. **Shakti**: *Yatna Shakti* (Power to make effort). \n**Vedic Insight**: Represents the storm (Rudra) that clears the air. It indicates transformation through emotional turbulence and intellectual intensity.",
+        7: "Punarvasu (The Star of Renewal): Ruled by Jupiter. Symbolized by a Quiver of Arrows. **Shakti**: *Vasutva Prapana Shakti* (Power to gain wealth/substance). \n**Vedic Insight**: 'Return of the Light'. It allows one to bounce back from failure. It is the star of safety, repetition, and restoration.",
+        8: "Pushya (The Star of Nourishment): Ruled by Saturn. Symbolized by a Cow's Udder. **Shakti**: *Brahmavarchasa Shakti* (Power to create spiritual energy). \n**Vedic Insight**: Considered the most auspicious star. It grants the ability to nourish structures, societies, and families.",
+        9: "Ashlesha (The Clinging Star): Ruled by Mercury. Symbolized by a Coiled Serpent. **Shakti**: *Vis Ashleshana Shakti* (Power to inflict poison). \n**Vedic Insight**: Represents Kundalini energy and primal instincts. It grants immense psychological insight but warns against deception.",
+        10: "Magha (The Star of Power): Ruled by Ketu. Symbolized by a Throne. **Shakti**: *Tyage Kshepani Shakti* (Power to leave the body). \n**Vedic Insight**: Connected to the Pitris (Ancestors). It grants connection to lineage, authority, and the duty to uphold tradition.",
+        11: "Purva Phalguni (The Fruit of the Tree): Ruled by Venus. Symbolized by a Hammock. **Shakti**: *Prajanana Shakti* (Power of procreation). \n**Vedic Insight**: Represents the joy of social connection and relaxation. It grants artistic talent and the ability to enjoy the fruits of past karma.",
+        12: "Uttara Phalguni (The Star of Patronage): Ruled by Sun. Symbolized by a Bed legs. **Shakti**: *Chayani Shakti* (Power of accumulation). \n**Vedic Insight**: Ruled by Aryaman (God of Patronage). It represents kindness, social contracts, and wealth gained through noble relationships. A 'King-Maker' star.",
+        13: "Hasta (The Golden Handed): Ruled by Moon. Symbolized by a Hand. **Shakti**: *Hasta Sthapaniya Agama Shakti* (Power to put one's object of desire in hand). \n**Vedic Insight**: Represents skilled craftsmanship and dexterity. It grants the ability to manifest what one seeks through hands-on effort and comedy.",
+        14: "Chitra (The Star of Opportunity): Ruled by Mars. Symbolized by a Jewel. **Shakti**: *Punya Chayani Shakti* (Power to accumulate merit). \n**Vedic Insight**: The 'Celestial Architect' (Tvashtar). It represents design, illusion (Maya), and the ability to create dazzling structures or forms.",
+        15: "Swati (The Self-Going Star): Ruled by Rahu. Symbolized by a Shoot of Plant. **Shakti**: *Pradhvamsa Shakti* (Power to scatter like the wind). \n**Vedic Insight**: Ruled by Vayu. It represents independence, diplomacy, and the ability to bend without breaking.",
+        16: "Vishakha (The Star of Purpose): Ruled by Jupiter. Symbolized by a Triumphal Arch. **Shakti**: *Vyapana Shakti* (Power to achieve and manifest). \n**Vedic Insight**: Represents the split determination to achieve goals. It grants ambition, jealousy of rivals, and ultimate victory.",
+        17: "Anuradha (The Star of Success): Ruled by Saturn. Symbolized by a Lotus. **Shakti**: *Radhana Shakti* (Power of worship). \n**Vedic Insight**: 'Following the Spark'. It represents friendship (Mitra) and devotion. It grants the ability to bloom even in difficult circumstances/mud.",
+        18: "Jyeshtha (The Chief Star): Ruled by Mercury. Symbolized by an Earring/Talisman. **Shakti**: *Arohana Shakti* (Power to rise/conquer). \n**Vedic Insight**: The eldest sister (Alakshmi). It grants seniority, protection, and the burden of leadership. Represents psychological dominance.",
+        19: "Mula (The Root Star): Ruled by Ketu. Symbolized by Tied Roots. **Shakti**: *Barhana Shakti* (Power to ruin and destroy). \n**Vedic Insight**: Ruled by Nirriti (Goddess of Calamity). It represents getting to the root of the matter, often through destruction of the old to build the new.",
+        20: "Purva Ashadha (The Invincible Star): Ruled by Venus. Symbolized by a Fan. **Shakti**: *Varchograhana Shakti* (Power to invigorate water). \n**Vedic Insight**: Ruled by Apah (Water). It represents the declaration of war and the patience to wait for victory. Unbeatable resilience.",
+        21: "Uttara Ashadha (The Universal Star): Ruled by Sun. Symbolized by an Elephant's Tusk. **Shakti**: *Apradhrisya Shakti* (Power to give permanent victory). \n**Vedic Insight**: Represents the 'Universal' (Vishvadevas). It grants alliances, integrity, and long-lasting achievements.",
+        22: "Shravana (The Star of Learning): Ruled by Moon. Symbolized by an Ear. **Shakti**: *Samhanana Shakti* (Power to connect). \n**Vedic Insight**: Ruled by Vishnu. It represents listening/Sruti. It grants wide knowledge, oral tradition, and organizational skill.",
+        23: "Dhanishta (The Star of Symphony): Ruled by Mars. Symbolized by a Drum. **Shakti**: *Khyapayitri Shakti* (Power to give fame and abundance). \n**Vedic Insight**: The 'Weathiest'. It represents rhythm, music, and emptiness (hollow drum). It grants wealth and the ability to time actions perfectly.",
+        24: "Shatabhisha (The Veiling Star): Ruled by Rahu. Symbolized by an Empty Circle. **Shakti**: *Bheshaja Shakti* (Power to heal). \n**Vedic Insight**: '100 Physicians'. It represents boundaries, secrecy, and deep healing. It grants access to hidden knowledge and ocean mysteries.",
+        25: "Purva Bhadrapada (The Scorching Pair): Ruled by Jupiter. Symbolized by a Sword/Two-faced man. **Shakti**: *Yajamana Udyamana Shakti* (Power to raise the evolutionary level). \n**Vedic Insight**: Fire Dragon (Aja Ekapada). It represents penance, intensity, and spiritual transformation through fire.",
+        26: "Uttara Bhadrapada (The Warrior Star): Ruled by Saturn. Symbolized by Twins/Snake in water. **Shakti**: *Varshodyamana Shakti* (Power to bring rain). \n**Vedic Insight**: The Deep Sea Dragon (Ahir Budhnya). It represents control, kundalini capability, and the power to contain immense energy.",
+        27: "Revati (The Keeper of Flocks): Ruled by Mercury. Symbolized by a Fish. **Shakti**: *Kshiradyapani Shakti* (Power of nourishment). \n**Vedic Insight**: The Final Path (Pushan). It represents safe travel, protection of animals, and transcendental wisdom."
     }
 
     RASHI_NATURE = {
-        1: "Aries (Mesha): Dynamic, pioneering, aggressive, head-strong.",
-        2: "Taurus (Vrishabha): Stable, practical, artistic, stubborn.",
-        3: "Gemini (Mithuna): Intellectual, versatile, communicative, dual-natured.",
-        4: "Cancer (Karka): Emotional, nurturing, domestic, intuitive.",
-        5: "Leo (Simha): Royal, creative, dramatic, egoistic.",
-        6: "Virgo (Kanya): Analytical, critical, service-oriented, perfectionist.",
-        7: "Libra (Tula): Diplomatic, balanced, artistic, indecisive.",
-        8: "Scorpio (Vrishchika): Intense, secretive, transformative, magnetic.",
-        9: "Sagittarius (Dhanu): Philosophical, optimistic, expansive, adventurous.",
-        10: "Capricorn (Makara): Structural, ambitious, disciplined, public life.",
-        11: "Aquarius (Kumbha): Innovative, humanitarian, eccentric, futuristic.",
-        12: "Pisces (Meena): Dreamy, spiritual, compassionate, escapist."
+        1: "Aries (Mesha): The Ram.",
+        2: "Taurus (Vrishabha): The Bull.",
+        3: "Gemini (Mithuna): The Twins.",
+        4: "Cancer (Karka): The Crab.",
+        5: "Leo (Simha): The Lion.",
+        6: "Virgo (Kanya): The Maiden.",
+        7: "Libra (Tula): The Scale.",
+        8: "Scorpio (Vrishchika): The Scorpion.",
+        9: "Sagittarius (Dhanu): The Archer.",
+        10: "Capricorn (Makara): The Sea-Goat.",
+        11: "Aquarius (Kumbha): The Water-Bearer.",
+        12: "Pisces (Meena): The Fishes."
     }
 
     PLANET_NATURE = {
         "Sun": {
-            "karaka": "Atma Karaka (Soul), Pitru Karaka (Father), Rajya Karaka (Authority)",
-            "desc": "Vitality, Ego, Leadership, and the 'Inner King'."
+            "karaka": "Atma Karaka (Soul)",
+            "desc": "The SOURCE. It represents consistency, authority, and the fire of existence."
         },
         "Moon": {
-            "karaka": "Matru Karaka (Mother), Mana Karaka (Mind)",
-            "desc": "Emotions, Psychiatry, Public Interaction, and Peace of Mind."
+            "karaka": "Mana Karaka (Mind)",
+            "desc": "The REFLECTOR. It represents fluid intelligence, emotions, and public connection."
         },
         "Mars": {
-            "karaka": "Bhatru Karaka (Siblings), Bhumi Karaka (Land)",
-            "desc": "Aggression, Logic, Engineering, Real Estate, and Willpower."
+            "karaka": "Bhatru Karaka (Energy)",
+            "desc": "The WARRIOR. It represents logic, engineering, land, and one-pointed focus."
         },
         "Mercury": {
-            "karaka": "Vidya Karaka (Knowledge), Vyavahara Karaka (Trade)",
-            "desc": "Intellect, Communication, Analytics, Astrology, and Commerce."
+            "karaka": "Vidya Karaka (Intellect)",
+            "desc": "The MESSENGER. It represents discriminative intelligence, speech, and trade."
         },
         "Jupiter": {
-            "karaka": "Putra Karaka (Children), Dhana Karaka (Wealth), Jnana Karaka (Wisdom)",
-            "desc": "Expansion, Luck, Spirituality, Teaching, and Optimism."
+            "karaka": "Guru (Wisdom)",
+            "desc": "The EXPANDER. It represents ether, dharma, luck, and adherence to law."
         },
         "Venus": {
-            "karaka": "Kalatra Karaka (Spouse/Desire), Vahana Karaka (Vehicles)",
-            "desc": "Love, Arts, Luxury, Diplomacy, and Reproductive Health."
+            "karaka": "Kalatra Karaka (Desire)",
+            "desc": "The DIPLOMAT. It represents decisions, valuation, relationships, and semen/ojas."
         },
         "Saturn": {
-            "karaka": "Ayush Karaka (Longevity), Karma Karaka (Profession)",
-            "desc": "Discipline, Delay, Fear, Structure, Democracy, and Hard Labour."
+            "karaka": "Karma Karaka (Action)",
+            "desc": "The JUDGE. It represents boundaries, time, delay, and the structure of reality."
         },
          "Rahu": {
-            "karaka": "Maya Karaka (Illusion), Videsha Karaka (Foreign)",
-            "desc": "Obsession, Unconventional Success, Technology, and Out-of-the-box thinking."
+            "karaka": "Chaya Graha (Illusion)",
+            "desc": "The OBSERVER. It represents expansion, foreign engineering, and breaking taboos."
         },
          "Ketu": {
             "karaka": "Moksha Karaka (Liberation)",
-            "desc": "Detachment, Spirituality, abstract mathematics, and sudden breaks."
+            "desc": "The ASCETIC. It represents contraction, mathematics, and flagless existence."
         }
     }
 
@@ -249,10 +249,48 @@ class AstrologicalInterpreter:
         """
         narrative = {
             "universal_identity": [],  # Common Links
+            "karma_classification": [], # Phase 5: Fixed vs Variable
             "strategic_strengths": [], # Rashi Scores (Detailed)
             "karmic_challenges": [],   # Weak Rashis (Detailed)
             "transit_timeline": []     # Future Forecast
         }
+        
+        # 0. Phase 5: Karma Classification (Sanchita vs Prarabdha)
+        rashi_data = analysis_results.get("rashi_analysis", {})
+        bav_breakdown_all = analysis_results.get("bav_breakdown", {})
+
+        for r_id_int, stats in rashi_data.items():
+            fixed_status = stats['key_insights'].get('fixed_status', 'VARIABLE')
+            r_name = self.RASHI_NATURE.get(int(r_id_int), f"Rashi {r_id_int}").split(":")[0]
+            
+            # BAV Analysis
+            bav_scores = bav_breakdown_all.get(r_id_int, {})
+            # Sort planets by contribution
+            top_contributors = sorted(bav_scores.items(), key=lambda x: x[1], reverse=True)
+            # Filter score > 0
+            contributors_str = ", ".join([f"{p} ({s})" for p, s in top_contributors if s > 0])
+            
+            # Generate Dynamic BAV Insight
+            top_3_planets = [p for p, s in top_contributors[:3] if s > 0]
+            if top_3_planets:
+                planet_influence_desc = f"Fueled by **{', '.join(top_3_planets)}**."
+            else:
+                planet_influence_desc = "Low planetary support."
+
+            if fixed_status == "FIXED":
+                classification = "**Sanchita** (Fixed/Universal)"
+                insight = (f"**Fixed Asset**. This area is supported by immutable planetary forces ({planet_influence_desc}). "
+                           "The score is universally high for your generation, indicating a shared resource.")
+            else:
+                classification = "**Prarabdha** (Variable/Individual)"
+                insight = f"**Variable Outcome**. While {planet_influence_desc}, the final strength of this house heavily depends on your specific Ascendant."
+                
+            narrative["karma_classification"].append({
+                "rashi": r_name,
+                "status": classification,
+                "insight": insight,
+                "bav_details": contributors_str
+            })
         
         # 1. Full Common Links Analysis
         common_links = analysis_results.get("common_links", {})
@@ -261,17 +299,31 @@ class AstrologicalInterpreter:
         for item in nakshatras:
             planet = item['planet']
             nak_id = item['nakshatra_id']
-            # Get Nakshatra name and full meaning
-            nak_name = self.NAKSHATRA_NAMES.get(nak_id, f"Nakshatra {nak_id}")
-            meaning = self.NAKSHATRA_MEANINGS.get(nak_id, f"Nakshatra {nak_id}")
+            # Get Nakshatra name, meaning, and Shakti
+            raw_nak_text = self.NAKSHATRA_MEANINGS.get(nak_id, f"Nakshatra {nak_id}")
+            nak_name = raw_nak_text.split(":")[0]
+            
+            # Extract Shakti if present (it's in the text)
+            shakti_segment = "Unknown Power"
+            if "**Shakti**:" in raw_nak_text:
+                parts = raw_nak_text.split("**Shakti**:")
+                if len(parts) > 1:
+                    shakti_segment = parts[1].split("\n")[0].strip()
+
             p_nature_info = self.PLANET_NATURE.get(planet, {"karaka": "Influence", "desc": "General Energy"})
             
+            # Dynamic Synthesis Template
+            interpretation_synthesis = (
+                f"For this cohort, **{p_nature_info['karaka']}** is channeled through **{nak_name}**. "
+                f"This creates a unique 'Sanchita' signature where {p_nature_info['desc']} acts to fulfill the *{shakti_segment}*. "
+                f"Basically, your generation approaches **{planet}** matters not directly, but through the {nak_name.split('(')[0].strip()} style—using {shakti_segment} to achieve its ends."
+            )
+            
             entry = (
-                f"**{planet} in {nak_name}**: "
-                f"\n   - *Core Theme*: {p_nature_info['karaka']} - {p_nature_info['desc']}"
-                f"\n   - *Nakshatra Influence*: {meaning}"
-                f"\n   - *Interpretation*: For everyone born on this day, {planet} operates through the lens of {nak_name}. "
-                "This is a fixed trait of your generation/cohort."
+                f"**{planet} in {nak_name}**\n"
+                f"- *Core Theme*: {p_nature_info['karaka']} - {p_nature_info['desc']}\n"
+                f"- *Nakshatra Influence*: {raw_nak_text}\n"
+                f"- *Interpretation*: {interpretation_synthesis}"
             )
             narrative["universal_identity"].append(entry)
                 

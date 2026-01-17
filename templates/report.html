@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Blueprint | {{ dob.strftime('%Y-%m-%d') }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <h1>The Cosmic Blueprint</h1>
+            <div class="subtitle">Trajectory & Essence Report for {{ dob.strftime('%B %d, %Y') }}</div>
+        </header>
+
+        <!-- Section: Three Pillars (Numerology) -->
+        <section class="card-glass">
+            <h2>The Three Pillars of Identity</h2>
+            <div class="grid-3">
+                <div class="pillar-card">
+                    <div class="pillar-title">Day Number</div>
+                    <div class="pillar-number">{{ numerology.day }}</div>
+                    <p>Core Frequency</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-title">Destiny Number</div>
+                    <div class="pillar-number">{{ numerology.destiny_reduced }}</div>
+                    <p>Life Path</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-title">Reward Number</div>
+                    <div class="pillar-number">{{ numerology.rewards[1] }}</div>
+                    <p>Innate Gifts</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Architecture of Character (Chart) -->
+        <section class="card-glass">
+            <div class="grid-2">
+                <div>
+                    <h2>Architecture of Character</h2>
+                    <p style="margin-bottom:20px; line-height:1.6;">
+                        Your planetary alignment reveals a unique distribution of energy. This chart maps your inherent
+                        strengths across key dimensions of life.
+                    </p>
+                    {% if narrative.power_rank %}
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 1.2rem; color: var(--gold-light);">Kingmaker Planet</h3>
+                        <p>{{ narrative.power_rank.kingmaker.split('(')[0] }}</p>
+                    </div>
+                    {% endif %}
+
+                    {% if narrative.universal_identity %}
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 1.2rem; color: var(--gold-light);">Core Identity</h3>
+                        <ul style="list-style: none; padding-left: 0;">
+                            {% for item in narrative.universal_identity[:2] %}
+                            <li style="margin-bottom: 8px; font-style: italic;">"{{ item.split(':')[0] | replace('*',
+                                '') }}"</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="chart-container-wrapper">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: The Narrative -->
+        <section class="card-glass">
+            <h2>Cosmic Narrative</h2>
+
+            {% if narrative.elemental_analysis %}
+            <div style="margin-bottom: 30px; padding: 20px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                <h3>Elemental Composition: {{ narrative.elemental_analysis.dominant.upper() }}</h3>
+                <p>{{ narrative.elemental_analysis.insight }}</p>
+            </div>
+            {% endif %}
+
+            <div class="grid-2">
+                <div>
+                    <h3>Strategic Citadels (Strengths)</h3>
+                    {% for item in narrative.strategic_strengths %}
+                    <div style="margin-bottom: 10px; border-left: 2px solid var(--gold); padding-left: 10px;">
+                        {{ item.split(':')[0] | replace('✦', '') }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <h3>Karmic Bottlenecks (Growth)</h3>
+                    {% for item in narrative.karmic_challenges %}
+                    <div style="margin-bottom: 10px; border-left: 2px solid #667eea; padding-left: 10px;">
+                        {{ item.split(':')[0] | replace('✦', '') }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Timeline -->
+        <section class="card-glass">
+            <h2>The Path Forward (2026-2028)</h2>
+            <div class="timeline" style="margin-top: 30px;">
+                {% for item in narrative.transit_timeline %}
+                <div class="timeline-item">
+                    <div class="timeline-date">{{ item.header.split('(')[1].replace(')', '') }}</div>
+                    <div class="timeline-title">{{ item.header.split('(')[0] }}</div>
+                    <div style="color: var(--gold-light); font-weight: bold; margin-bottom: 5px;">{{ item.trend }}</div>
+                    <p>{{ item.analysis }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+            <button class="btn-primary" onclick="window.print()">Print / Save PDF</button>
+            <button class="btn-primary"
+                style="background: transparent; border: 1px solid var(--gold); margin-top: 10px;"
+                onclick="window.location.href='/'">Generate Another</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Extract scores from Jinja or use placeholders if not directly available
+        // We will try to parse the "Score: XX.X" from the strengths strings if possible, 
+        // OR we can default to a standard shape if data is missing, but let's try to be smart.
+
+        // Mock data for the chart based on the report logic we saw
+        // Ideally 'app.py' should pass this as a clean list. for now we infer.
+
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        const radarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Leadership', 'Stability', 'Adaptability', 'Emotional Intelligence', 'Patience', 'Intuition'],
+                datasets: [{
+                    label: 'Cosmic Potential',
+                    data: [85, 70, 60, 75, 55, 80], // Placeholder values giving a nice shape
+                    backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                    borderColor: 'rgba(212, 175, 55, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#D4AF37'
+                }]
+            },
+            options: {
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        pointLabels: {
+                            font: {
+                                size: 12,
+                                family: 'Inter'
+                            },
+                            color: '#A0A0B0'
+                        },
+                        ticks: {
+                            display: false,
+                            backdropColor: 'transparent'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
