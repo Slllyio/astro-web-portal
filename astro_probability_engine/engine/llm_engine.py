@@ -15,7 +15,7 @@ class LLMEngine:
             raise ValueError("API Key required")
         
         self.client = OpenAI(api_key=api_key)
-        self.model = "gpt-4o-mini" # Cost-effective but smart
+        self.model = "gpt-3.5-turbo" # Most compatible model
 
     def generate_insight(self, narrative_data: Dict[str, Any]) -> str:
         """
@@ -66,5 +66,12 @@ class LLMEngine:
             return response.choices[0].message.content
 
         except Exception as e:
-            print(f"LLM Generation Error: {e}")
-            return "AI Baba is meditating (Service Unavailable - Check API Key)."
+            error_msg = str(e)
+            print(f"LLM Generation Error: {error_msg}")
+            # Return the actual error to the UI for debugging
+            if "insufficient_quota" in error_msg:
+                return "AI Baba is silent: You have run out of OpenAI credits. Please check your billing."
+            elif "invalid_api_key" in error_msg:
+                return "AI Baba is confused: The provided API Key is invalid."
+            else:
+                return f"AI Baba is having trouble connecting to the cosmos: {error_msg}"
