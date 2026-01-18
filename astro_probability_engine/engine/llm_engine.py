@@ -70,11 +70,15 @@ class LLMEngine:
 
         except Exception as e:
             error_msg = str(e)
-            print(f"LLM Generation Error: {error_msg}")
+            # MASKED DEBUGGING: Show the first few chars of the key to see if it's "amity" or "gsk_..."
+            masked_key = self.client.api_key[:4] + "***" + self.client.api_key[-4:] if self.client.api_key else "None"
+            
+            print(f"LLM Generation Error: {error_msg} | Using Key: {masked_key}")
+            
             # Return the actual error to the UI for debugging
             if "insufficient_quota" in error_msg:
-                return "AI Baba is silent: You have run out of OpenAI credits. Please check your billing."
+                return "AI Baba is silent: You have run out of OpenAI/Groq credits."
             elif "invalid_api_key" in error_msg:
-                return "AI Baba is confused: The provided API Key is invalid."
+                return f"AI Baba Error: Invalid Key. The app is seeing a key starting with '{masked_key[:4]}'. Check your Render Environment Variables."
             else:
-                return f"AI Baba is having trouble connecting to the cosmos: {error_msg}"
+                return f"AI Baba Error: {error_msg} (Key starts: {masked_key[:5]}...)"
