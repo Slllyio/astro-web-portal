@@ -49,48 +49,40 @@ class LLMEngine:
             # (In a full version, we'd match exact planetary placements)
             match = next((c for c in celebrity_db if c['element'] == element), celebrity_db[0])
             
-            # 4. Synthesize "The Soul's Blueprint"
-            intro_templates = [
-                f"Your soul has chosen the path of the **{core_trait}**. This lifetime is a stage for your evolution.",
-                f"At your core, you carry the frequency of the **{core_trait}**. The universe has encoded this into your being.",
-                f"You are walking the sacred path of the **{core_trait}**. This is your fundamental truth."
-            ]
-            intro = random.choice(intro_templates)
+            # 4. RPG Stats & Simplified Narrative
+            intro = f"Your soul carries the frequency of the **{core_trait}**. Explore your stats below."
+            
+            # RPG Stats Calculation (Mock logic mapping planetary strength to RPG attributes)
+            # In a full engine, we map Sun->Vitality, Mercury->Intellect, etc.
+            # Using random variance based on element for "flavor"
+            base_stat = 75
+            bonus = 10 if element == "Fire" else 5
+            vitality = base_stat + bonus + random.randint(0, 10)
+            intellect = base_stat + (10 if element == "Air" else 5) + random.randint(0, 10)
+            charisma = base_stat + (10 if element == "Water" else 5) + random.randint(0, 10)
+            luck = base_stat + (10 if element == "Ether" else 5) + random.randint(0, 10)
 
-            # 5. Synthesize "The Karmic Path"
-            karmic_templates = [
-                f"Your greatest growth lies in mastering **{main_challenge['name']}**. {main_challenge['desc']}. It is a gym for your spiritual muscles.",
-                f"The cosmos challenges you through **{main_challenge['name']}**. Use this resistance to build character.",
-                f"Pay close attention to **{main_challenge['name']}**. {main_challenge['desc']}."
-            ]
-            karma = random.choice(karmic_templates)
+            # 5. Synthesize "The Karmic Path" (Simplified)
+            karma = f"Your growth zone is **{main_challenge['name']}**. Challenge: {main_challenge['desc']}."
 
             # 6. Synthesize "The Golden Key"
             strength_name = top_strength['name']
-            power_templates = [
-                f"Your secret weapon is **{strength_name}**. When you lean into this energy, doors open.",
-                f"Unlock your destiny by embracing **{strength_name}**. It is your path of least resistance.",
-                f"Trust in your **{strength_name}**."
-            ]
-            power = random.choice(power_templates)
+            power = f"Your superpower is **{strength_name}**. Use it to unlock doors."
 
-            # 7. Final Blessing & Celebrity Match
-            blessings = {
-                "Fire": "Go forth and burn bright. Your passion is the light of the world.",
-                "Earth": "Build your legacy with patience. You are the mountain.",
-                "Air": "Let your ideas soar. Your mind is your wings.",
-                "Water": "Flow with your intuition. Your depth is your strength.",
-                "Ether": "Trust the unseen. You are guided by the stars."
-            }
-            blessing = blessings.get(element, blessings["Ether"])
-
-            # Combine
+            # 7. Final Output Construction
             final_narrative = (
-                f"### The Core Essence\n{intro}\n\n"
-                f"### The Karmic Path\n{karma}\n\n"
-                f"### The Golden Key\n{power}\n\n"
-                f"### Cosmic Twin\nYou share a spiritual lineage with **{match['name']}** ({match['trait']}). Like them, your power lies in the element of **{element}**.\n\n"
-                f"### AI Baba's Blessing\n*{blessing}*"
+                f"### Cosmic Character Sheet\n"
+                f"**Archetype**: {core_trait}\n"
+                f"**Cosmic Twin**: {match['name']} ({match['trait']})\n\n"
+                f"#### Base Stats\n"
+                f"*   **Vitality**: {vitality}/100\n"
+                f"*   **Intellect**: {intellect}/100\n"
+                f"*   **Charisma**: {charisma}/100\n"
+                f"*   **Luck**: {luck}/100\n\n"
+                f"### Strategic Insight\n"
+                f"*   **Zone of Power**: {power}\n"
+                f"*   **Zone of Growth**: {karma}\n"
+                f"\n*{blessing}*"
             )
 
             return final_narrative
