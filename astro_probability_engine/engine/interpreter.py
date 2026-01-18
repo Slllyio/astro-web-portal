@@ -458,6 +458,31 @@ class AstrologicalInterpreter:
         planetary_strength = analysis_results.get("planetary_strength", {})
         narrative["remedies"] = self.generate_remedies(planetary_strength)
         
+        # 14. Deep Stats for Radar Chart (Shad Bala Based)
+        def get_strength(planet, default=50):
+            val = planetary_strength.get(planet, default)
+            if isinstance(val, str):
+                try: val = float(val)
+                except: val = default
+            return min(98, max(20, int(val)))
+        
+        sun = get_strength("Sun")
+        moon = get_strength("Moon")
+        mars = get_strength("Mars")
+        mercury = get_strength("Mercury")
+        jupiter = get_strength("Jupiter")
+        venus = get_strength("Venus")
+        saturn = get_strength("Saturn")
+        
+        narrative["deep_stats"] = {
+            "willpower": int((sun + mars) / 2),
+            "intellect": int((mercury + jupiter) / 2),
+            "intuition": int((moon + saturn) / 2),
+            "leadership": int((sun + saturn) / 2),
+            "wealth_iq": int((jupiter + venus) / 2),
+            "empathy": int((venus + moon) / 2)
+        }
+        
         # 14. AI Deep Dive (If available)
         if self.llm:
             narrative["ai_insight"] = self.llm.generate_insight(narrative)

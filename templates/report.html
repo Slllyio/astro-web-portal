@@ -333,48 +333,56 @@
         const radarChart = new Chart(ctx, {
             type: 'radar',
             data: {
-                labels: ['Leadership', 'Stability', 'Adaptability', 'Emotional Intelligence', 'Patience', 'Intuition'],
+                labels: ['Willpower', 'Intellect', 'Intuition', 'Leadership', 'Wealth IQ', 'Empathy'],
                 datasets: [{
-                    label: 'Cosmic Potential',
-                    data: [85, 70, 60, 75, 55, 80], // Placeholder values giving a nice shape
-                    backgroundColor: 'rgba(212, 175, 55, 0.2)',
-                    borderColor: 'rgba(212, 175, 55, 1)',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#fff',
-                    pointBorderColor: '#D4AF37'
+                    label: 'Your Cosmic Stats',
+                    data: [
+                        {{ narrative.deep_stats.willpower | default(70) }},
+                {{ narrative.deep_stats.intellect | default(70) }},
+                        {{ narrative.deep_stats.intuition | default(70) }},
+        { { narrative.deep_stats.leadership | default (70) } },
+        { { narrative.deep_stats.wealth_iq | default (70) } },
+        { { narrative.deep_stats.empathy | default (70) } }
+                    ],
+        backgroundColor: 'rgba(255, 215, 0, 0.15)',
+            borderColor: 'rgba(255, 215, 0, 1)',
+                borderWidth: 2,
+                    pointBackgroundColor: '#FFD700',
+                        pointBorderColor: '#fff',
+                            pointRadius: 5
                 }]
             },
-            options: {
-                responsive: true,
+        options: {
+            responsive: true,
                 maintainAspectRatio: true,
-                devicePixelRatio: 2, // Higher resolution for sharper rendering
-                scales: {
-                    r: {
-                        angleLines: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        pointLabels: {
-                            font: {
-                                size: 12,
+                    devicePixelRatio: 2, // Higher resolution for sharper rendering
+                        scales: {
+                r: {
+                    angleLines: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    pointLabels: {
+                        font: {
+                            size: 12,
                                 family: 'Inter'
-                            },
-                            color: '#A0A0B0'
                         },
-                        ticks: {
-                            display: false,
+                        color: '#A0A0B0'
+                    },
+                    ticks: {
+                        display: false,
                             backdropColor: 'transparent'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
                     }
                 }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
             }
+        }
         });
     </script>
 </body>
