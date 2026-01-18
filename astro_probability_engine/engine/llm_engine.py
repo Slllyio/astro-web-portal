@@ -107,7 +107,17 @@ class LLMEngine:
             strength_name = top_strength['name']
             power = f"Your innate ability is **{strength_name}**. Equip this skill to bypass obstacles."
 
-            # 7. Final Output Construction
+            # 7. Final Blessing
+            blessings = {
+                "Fire": "Go forth and burn bright. Your passion is the light of the world.",
+                "Earth": "Build your legacy with patience. You are the mountain.",
+                "Air": "Let your ideas soar. Your mind is your wings.",
+                "Water": "Flow with your intuition. Your depth is your strength.",
+                "Ether": "Trust the unseen. You are guided by the stars."
+            }
+            blessing = blessings.get(element, blessings["Ether"])
+
+            # 8. Final Output Construction
             final_narrative = (
                 f"### Cosmic Character Sheet (v2.0)\n"
                 f"**Class**: {core_trait}\n"
