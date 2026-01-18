@@ -79,47 +79,22 @@ class LLMEngine:
             # Select the "best" match (Simulation: Random from the filtered pool to prevent staleness on same chart)
             match = random.choice(potential_matches)
             
-            # 4. RPG Stats & Simplified Narrative
-            intro = f"Your soul frequency aligns with the archetype of the **{core_trait}**. Explore your cosmic blueprint below."
-            
-            # --- DEEP STAT SYSTEM v3.0 (Multi-Variable Logic) ---
-            # We derive specific attributes from combinations of Planetary Strength + Elemental Dominance
-            
-            # Base Factor (Randomized slightly for demo variance if raw strength isn't passed)
-            # In a full production version, we would pull 'shad_bala' values directly.
-            # Here we simulate the weighted logic:
-            
-            def calculate_stat(primary_planet, secondary_planet, element_boost, base=70):
-                # Placeholder logic: In reaity, this would be: (Strength(P1) + Strength(P2)) / 2 + Boost
-                val = base + random.randint(5, 15) # Simulating strong planets
-                if element == element_boost: val += 10
+            # 4. Deep Stat Calculation (Simplified)
+            def calculate_stat(element_boost, base=72):
+                val = base + random.randint(8, 18)
+                if element == element_boost: val += 12
                 return min(98, val)
 
-            # 1. WILLPOWER (Mars + Sun + Fire)
-            willpower = calculate_stat("Mars", "Sun", "Fire")
-            
-            # 2. INTELLECT (Mercury + Jupiter + Air)
-            intellect = calculate_stat("Mercury", "Jupiter", "Air")
-            
-            # 3. WEALTH IQ (Jupiter + Venus + Earth)
-            wealth_iq = calculate_stat("Jupiter", "Venus", "Earth")
-            
-            # 4. INTUITION (Moon + Ketu + Water)
-            intuition = calculate_stat("Moon", "Ketu", "Water")
-            
-            # 5. LEADERSHIP (Sun + Mars + Fire)
-            leadership = calculate_stat("Sun", "Mars", "Fire")
-            
-            # 6. EMPATHY (Venus + Moon + Water)
-            empathy = calculate_stat("Venus", "Moon", "Water")
+            willpower = calculate_stat("Fire")
+            intellect = calculate_stat("Air")
+            wealth_iq = calculate_stat("Earth")
+            intuition = calculate_stat("Water")
+            leadership = calculate_stat("Fire")
+            empathy = calculate_stat("Water")
 
-            # 5. Synthesize "The Karmic Path"
-            karma_desc = main_challenge['desc']
-            karma = f"Your current level requires mastering **{main_challenge['name']}**. Mission: {karma_desc}."
-
-            # 6. Synthesize "The Golden Key"
-            strength_name = top_strength['name']
-            power = f"Your innate ability is **{strength_name}**. Equip this skill to bypass obstacles."
+            # 5. Karmic Path & Power (Clean text, no raw data)
+            karma_name = main_challenge['name'] if isinstance(main_challenge['name'], str) else "Inner Shadow"
+            power_name = top_strength['name'] if isinstance(top_strength['name'], str) else "Hidden Potential"
 
             # 7. Final Blessing
             blessings = {
@@ -131,24 +106,55 @@ class LLMEngine:
             }
             blessing = blessings.get(element, blessings["Ether"])
 
-            # 8. Final Output Construction
-            final_narrative = (
-                f"### Cosmic Character Sheet (v3.0 - Deep Analysis)\n"
-                f"**Archetype**: {core_trait}\n"
-                f"**Cosmic Match**: {match['name']} ({match['trait']})\n\n"
-                f"#### 🧠 Mental & Spiritual Stats\n"
-                f"*   **Willpower**: {willpower}/100 (Drive & Resilience)\n"
-                f"*   **Intellect**: {intellect}/100 (Strategy & Logic)\n"
-                f"*   **Intuition**: {intuition}/100 (Inner Knowing)\n\n"
-                f"#### ⚔️ Social & Physical Stats\n"
-                f"*   **Leadership**: {leadership}/100 (Command & Authority)\n"
-                f"*   **Wealth IQ**: {wealth_iq}/100 (Resource Management)\n"
-                f"*   **Empathy**: {empathy}/100 (Connection & Healing)\n\n"
-                f"### Strategy Guide\n"
-                f"*   **Special Move**: {power}\n"
-                f"*   **Current Quest**: {karma}\n"
-                f"\n*{blessing}*"
-            )
+            # 8. Final Output - CLEAN HTML (No raw markdown)
+            final_narrative = f"""
+<div style="text-align: center; margin-bottom: 30px;">
+    <span style="font-size: 1.5rem; color: var(--gold); font-weight: 600;">Your Cosmic Match</span><br>
+    <span style="font-size: 2rem; font-weight: 700; color: white;">{match['name']}</span>
+    <p style="color: var(--text-secondary); font-style: italic;">"{match['trait']}"</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">Willpower</div>
+        <div style="font-size: 1.8rem; font-weight: bold; color: var(--gold);">{willpower}</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">Intellect</div>
+        <div style="font-size: 1.8rem; font-weight: bold; color: var(--gold);">{intellect}</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">Intuition</div>
+        <div style="font-size: 1.8rem; font-weight: bold; color: var(--gold);">{intuition}</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">Leadership</div>
+        <div style="font-size: 1.8rem; font-weight: bold; color: var(--gold);">{leadership}</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">Wealth IQ</div>
+        <div style="font-size: 1.8rem; font-weight: bold; color: var(--gold);">{wealth_iq}</div>
+    </div>
+    <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center;">
+        <div style="font-size: 0.9rem; color: var(--text-secondary);">Empathy</div>
+        <div style="font-size: 1.8rem; font-weight: bold; color: var(--gold);">{empathy}</div>
+    </div>
+</div>
+
+<div style="background: rgba(107, 70, 193, 0.15); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+    <h4 style="color: var(--gold); margin: 0 0 10px 0;">⚔️ Your Quest</h4>
+    <p style="margin: 0; line-height: 1.8;">Master the energy of <strong>{karma_name}</strong>. This is where your soul seeks growth.</p>
+</div>
+
+<div style="background: rgba(255, 215, 0, 0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+    <h4 style="color: var(--gold); margin: 0 0 10px 0;">🌟 Your Superpower</h4>
+    <p style="margin: 0; line-height: 1.8;">Lean into <strong>{power_name}</strong>. This is your path of least resistance to success.</p>
+</div>
+
+<p style="text-align: center; font-style: italic; color: var(--gold); font-size: 1.15rem; margin-top: 30px;">
+    "{blessing}"
+</p>
+"""
 
             return final_narrative
 
