@@ -216,7 +216,67 @@ class LLMEngine:
             }
             dasha_advice = dasha_advice_map.get(dasha_planet, "Trust the cosmic timing.")
             
-            # ============= 7. GENERATE CLEAN HTML OUTPUT =============
+            # ============= 7. STAT INFERENCES =============
+            # Analyze top strengths and weakest area
+            stat_analysis = [
+                ("Willpower", willpower, "Drive, resilience, and the ability to push through obstacles."),
+                ("Intellect", intellect, "Strategic thinking, learning speed, and problem-solving."),
+                ("Intuition", intuition, "Inner knowing, spiritual insight, and reading situations."),
+                ("Leadership", leadership, "Authority, command presence, and ability to inspire others."),
+                ("Wealth IQ", wealth_iq, "Financial instinct, resource management, and abundance attraction."),
+                ("Empathy", empathy, "Emotional intelligence, connection, and healing ability.")
+            ]
+            
+            # Sort by score
+            sorted_stats = sorted(stat_analysis, key=lambda x: x[1], reverse=True)
+            top_stat = sorted_stats[0]
+            second_stat = sorted_stats[1]
+            weakest_stat = sorted_stats[-1]
+            
+            # Generate insights
+            top_insight = f"<strong>{top_stat[0]}</strong> ({top_stat[1]}) is your superpower. {top_stat[2]}"
+            second_insight = f"<strong>{second_stat[0]}</strong> ({second_stat[1]}) supports this as your secondary strength."
+            
+            # Weakness advice
+            weakness_advice_map = {
+                "Willpower": "Practice discipline and set small daily goals to build resilience.",
+                "Intellect": "Engage in puzzles, reading, or learning new skills to sharpen your mind.",
+                "Intuition": "Meditation and journaling can help develop your inner voice.",
+                "Leadership": "Take on small leadership roles to build confidence gradually.",
+                "Wealth IQ": "Study financial basics and track your spending to build awareness.",
+                "Empathy": "Practice active listening and put yourself in others' shoes."
+            }
+            weak_insight = f"<strong>{weakest_stat[0]}</strong> ({weakest_stat[1]}) is your growth edge. {weakness_advice_map.get(weakest_stat[0], 'Focus here for development.')}"
+            
+            # Career Insight (based on top 2 stats)
+            career_map = {
+                ("Leadership", "Willpower"): "Executive roles, entrepreneurship, or military/sports leadership suit you best.",
+                ("Intellect", "Leadership"): "Strategic consulting, tech leadership, or research management are ideal paths.",
+                ("Wealth IQ", "Intellect"): "Finance, investment banking, or business strategy align with your strengths.",
+                ("Empathy", "Intuition"): "Counseling, healthcare, or creative arts will fulfill you deeply.",
+                ("Willpower", "Intellect"): "Engineering, law, or competitive fields match your drive and mind.",
+                ("Intuition", "Empathy"): "Healing professions, spiritual guidance, or the arts resonate with your soul.",
+                ("Leadership", "Empathy"): "HR leadership, coaching, or social entrepreneurship leverage your gifts.",
+                ("Wealth IQ", "Leadership"): "Business ownership, real estate, or corporate finance are natural fits."
+            }
+            # Try to match top 2 stats
+            stat_combo = (top_stat[0], second_stat[0])
+            stat_combo_rev = (second_stat[0], top_stat[0])
+            career_insight = career_map.get(stat_combo, career_map.get(stat_combo_rev, 
+                f"Your unique combination of {top_stat[0]} and {second_stat[0]} opens diverse career paths. Trust your instincts."))
+            
+            # Relationship Insight (based on Empathy + Intuition balance)
+            if empathy >= 80 and intuition >= 75:
+                relationship_insight = "You form deep, soulful connections. Partners feel truly seen by you. Avoid absorbing others' emotions."
+            elif leadership >= 80 and empathy < 60:
+                relationship_insight = "You lead in relationships but may need to practice active listening. Balance giving direction with receiving."
+            elif intellect >= 85:
+                relationship_insight = "You connect through ideas and conversation. Ensure you also nurture emotional intimacy beyond the mental."
+            elif willpower >= 85 and empathy >= 70:
+                relationship_insight = "You're a protector and provider. Your strength inspires others, but remember to show vulnerability too."
+            else:
+                relationship_insight = "You seek balance and harmony in relationships. Your adaptability is your strength in love."
+            
             # Blessings
             blessings = {
                 "Fire": "Go forth and burn bright. Your passion is the light of the world.",
@@ -277,6 +337,23 @@ class LLMEngine:
 <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 18px; margin-bottom: 15px;">
     <h4 style="color: var(--gold); margin: 0 0 8px 0; font-size: 1rem;">✨ Active Yogas</h4>
     <p style="margin: 0; color: var(--text-secondary);">{yoga_display}</p>
+</div>
+
+<div style="background: linear-gradient(135deg, rgba(107, 70, 193, 0.12), rgba(255, 215, 0, 0.08)); border-radius: 12px; padding: 20px; margin-bottom: 15px; border-left: 3px solid var(--gold);">
+    <h4 style="color: var(--gold); margin: 0 0 12px 0; font-size: 1.1rem;">🔮 Deep Insights from Your Stats</h4>
+    <p style="margin: 0 0 10px 0; line-height: 1.8;">✅ {top_insight}</p>
+    <p style="margin: 0 0 10px 0; line-height: 1.8; color: var(--text-secondary);">✅ {second_insight}</p>
+    <p style="margin: 0; line-height: 1.8; color: #e8a87c;">⚠️ {weak_insight}</p>
+</div>
+
+<div style="background: rgba(40, 167, 69, 0.1); border-radius: 12px; padding: 18px; margin-bottom: 15px;">
+    <h4 style="color: #7dcea0; margin: 0 0 8px 0; font-size: 1rem;">💼 Career Alignment</h4>
+    <p style="margin: 0; line-height: 1.7;">{career_insight}</p>
+</div>
+
+<div style="background: rgba(220, 53, 69, 0.08); border-radius: 12px; padding: 18px; margin-bottom: 15px;">
+    <h4 style="color: #f5b7b1; margin: 0 0 8px 0; font-size: 1rem;">💝 Relationship Style</h4>
+    <p style="margin: 0; line-height: 1.7;">{relationship_insight}</p>
 </div>
 
 <p style="text-align: center; font-style: italic; color: var(--gold); font-size: 1.1rem; margin-top: 25px;">
