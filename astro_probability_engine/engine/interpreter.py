@@ -120,7 +120,8 @@ class AstrologicalInterpreter:
         # Initialize LLM Engine
         from .llm_engine import LLMEngine
         import os
-        api_key = os.environ.get("OPENAI_API_KEY")
+        # Prioritize Groq, fallback to OpenAI if needed (flexible)
+        api_key = os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
         
         self.llm = None
         if api_key:

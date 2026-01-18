@@ -14,8 +14,11 @@ class LLMEngine:
         if not api_key:
             raise ValueError("API Key required")
         
-        self.client = OpenAI(api_key=api_key)
-        self.model = "gpt-3.5-turbo" # Most compatible model
+        self.client = OpenAI(
+            api_key=api_key, 
+            base_url="https://api.groq.com/openai/v1"
+        )
+        self.model = "llama-3.3-70b-versatile" # Groq's powerful model
 
     def generate_insight(self, narrative_data: Dict[str, Any]) -> str:
         """
