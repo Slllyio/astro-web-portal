@@ -322,13 +322,7 @@
     </div>
 
     <script>
-        // Extract scores from Jinja or use placeholders if not directly available
-        // We will try to parse the "Score: XX.X" from the strengths strings if possible, 
-        // OR we can default to a standard shape if data is missing, but let's try to be smart.
-
-        // Mock data for the chart based on the report logic we saw
-        // Ideally 'app.py' should pass this as a clean list. for now we infer.
-
+        // Radar Chart - Uses Deep Stats from AI Baba
         const ctx = document.getElementById('radarChart').getContext('2d');
         const radarChart = new Chart(ctx, {
             type: 'radar',
@@ -337,12 +331,12 @@
                 datasets: [{
                     label: 'Your Cosmic Stats',
                     data: [
-                        {{ narrative.deep_stats.willpower | default(70) }},
-                {{ narrative.deep_stats.intellect | default(70) }},
-                        {{ narrative.deep_stats.intuition | default(70) }},
-        { { narrative.deep_stats.leadership | default (70) } },
-        { { narrative.deep_stats.wealth_iq | default (70) } },
-        { { narrative.deep_stats.empathy | default (70) } }
+                        {{ narrative.deep_stats.willpower |default(70) }},
+                {{ narrative.deep_stats.intellect |default(70) }},
+                        {{ narrative.deep_stats.intuition |default(70) }},
+        { { narrative.deep_stats.leadership |default (70) } },
+        { { narrative.deep_stats.wealth_iq |default (70) } },
+        { { narrative.deep_stats.empathy |default (70) } }
                     ],
         backgroundColor: 'rgba(255, 215, 0, 0.15)',
             borderColor: 'rgba(255, 215, 0, 1)',
@@ -355,33 +349,21 @@
         options: {
             responsive: true,
                 maintainAspectRatio: true,
-                    devicePixelRatio: 2, // Higher resolution for sharper rendering
+                    devicePixelRatio: 2,
                         scales: {
                 r: {
-                    angleLines: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
+                    min: 0,
+                        max: 100,
+                            angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
                     pointLabels: {
-                        font: {
-                            size: 12,
-                                family: 'Inter'
-                        },
+                        font: { size: 12, family: 'Inter' },
                         color: '#A0A0B0'
                     },
-                    ticks: {
-                        display: false,
-                            backdropColor: 'transparent'
-                    }
+                    ticks: { display: false, backdropColor: 'transparent' }
                 }
             },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
+            plugins: { legend: { display: false } }
         }
         });
     </script>
