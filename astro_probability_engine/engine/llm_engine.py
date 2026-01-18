@@ -38,23 +38,47 @@ class LLMEngine:
         "Revati": ("The Nurturer", "Safe travel, prosperity, and completion")
     }
     
-    # Celebrity Database with Deep Matching
+    # Celebrity Database with Deep Stats for Matching
     CELEBRITY_DB = [
-        {"name": "Steve Jobs", "trait": "The Innovator", "element": "Fire", "nakshatra": "Purva Phalguni"},
-        {"name": "Albert Einstein", "trait": "The Genius", "element": "Air", "nakshatra": "Punarvasu"},
-        {"name": "Mother Teresa", "trait": "The Saint", "element": "Water", "nakshatra": "Pushya"},
-        {"name": "Virat Kohli", "trait": "The Warrior", "element": "Fire", "nakshatra": "Jyeshtha"},
-        {"name": "Oprah Winfrey", "trait": "The Voice", "element": "Air", "nakshatra": "Shravana"},
-        {"name": "Warren Buffett", "trait": "The Oracle", "element": "Earth", "nakshatra": "Dhanishta"},
-        {"name": "Elon Musk", "trait": "The Disruptor", "element": "Air", "nakshatra": "Ardra"},
-        {"name": "Beyoncé", "trait": "The Icon", "element": "Water", "nakshatra": "Rohini"},
-        {"name": "Dalai Lama", "trait": "The Monk", "element": "Water", "nakshatra": "Uttara Bhadrapada"},
-        {"name": "Walt Disney", "trait": "The Dreamer", "element": "Fire", "nakshatra": "Rohini"},
-        {"name": "Nikola Tesla", "trait": "The Mystic", "element": "Ether", "nakshatra": "Ardra"},
-        {"name": "Amitabh Bachchan", "trait": "The Star", "element": "Fire", "nakshatra": "Swati"},
-        {"name": "Ratan Tata", "trait": "The Patriarch", "element": "Earth", "nakshatra": "Magha"},
-        {"name": "APJ Abdul Kalam", "trait": "The Missile Man", "element": "Air", "nakshatra": "Ashwini"},
-        {"name": "Rabindranath Tagore", "trait": "The Poet", "element": "Water", "nakshatra": "Mrigashira"},
+        # FIRE DOMINANT (High Willpower, Leadership)
+        {"name": "Steve Jobs", "trait": "The Innovator", "element": "Fire", "nakshatra": "Purva Phalguni",
+         "stats": {"willpower": 92, "intellect": 88, "intuition": 65, "leadership": 95, "wealth_iq": 85, "empathy": 55}},
+        {"name": "Virat Kohli", "trait": "The Warrior", "element": "Fire", "nakshatra": "Jyeshtha",
+         "stats": {"willpower": 95, "intellect": 70, "intuition": 60, "leadership": 88, "wealth_iq": 75, "empathy": 65}},
+        {"name": "Walt Disney", "trait": "The Dreamer", "element": "Fire", "nakshatra": "Rohini",
+         "stats": {"willpower": 85, "intellect": 78, "intuition": 80, "leadership": 82, "wealth_iq": 90, "empathy": 75}},
+        {"name": "Amitabh Bachchan", "trait": "The Star", "element": "Fire", "nakshatra": "Swati",
+         "stats": {"willpower": 88, "intellect": 75, "intuition": 72, "leadership": 85, "wealth_iq": 78, "empathy": 80}},
+        
+        # AIR DOMINANT (High Intellect)
+        {"name": "Albert Einstein", "trait": "The Genius", "element": "Air", "nakshatra": "Punarvasu",
+         "stats": {"willpower": 75, "intellect": 98, "intuition": 85, "leadership": 60, "wealth_iq": 55, "empathy": 70}},
+        {"name": "Elon Musk", "trait": "The Disruptor", "element": "Air", "nakshatra": "Ardra",
+         "stats": {"willpower": 90, "intellect": 95, "intuition": 70, "leadership": 85, "wealth_iq": 92, "empathy": 45}},
+        {"name": "Oprah Winfrey", "trait": "The Voice", "element": "Air", "nakshatra": "Shravana",
+         "stats": {"willpower": 85, "intellect": 82, "intuition": 88, "leadership": 90, "wealth_iq": 88, "empathy": 95}},
+        {"name": "APJ Abdul Kalam", "trait": "The Missile Man", "element": "Air", "nakshatra": "Ashwini",
+         "stats": {"willpower": 90, "intellect": 92, "intuition": 85, "leadership": 88, "wealth_iq": 50, "empathy": 90}},
+        
+        # EARTH DOMINANT (High Wealth IQ, Leadership)
+        {"name": "Warren Buffett", "trait": "The Oracle", "element": "Earth", "nakshatra": "Dhanishta",
+         "stats": {"willpower": 80, "intellect": 90, "intuition": 88, "leadership": 75, "wealth_iq": 98, "empathy": 65}},
+        {"name": "Ratan Tata", "trait": "The Patriarch", "element": "Earth", "nakshatra": "Magha",
+         "stats": {"willpower": 85, "intellect": 82, "intuition": 75, "leadership": 90, "wealth_iq": 92, "empathy": 88}},
+        
+        # WATER DOMINANT (High Intuition, Empathy)
+        {"name": "Mother Teresa", "trait": "The Saint", "element": "Water", "nakshatra": "Pushya",
+         "stats": {"willpower": 92, "intellect": 70, "intuition": 95, "leadership": 80, "wealth_iq": 40, "empathy": 98}},
+        {"name": "Beyoncé", "trait": "The Icon", "element": "Water", "nakshatra": "Rohini",
+         "stats": {"willpower": 88, "intellect": 75, "intuition": 85, "leadership": 82, "wealth_iq": 90, "empathy": 85}},
+        {"name": "Dalai Lama", "trait": "The Monk", "element": "Water", "nakshatra": "Uttara Bhadrapada",
+         "stats": {"willpower": 88, "intellect": 85, "intuition": 98, "leadership": 85, "wealth_iq": 45, "empathy": 95}},
+        {"name": "Rabindranath Tagore", "trait": "The Poet", "element": "Water", "nakshatra": "Mrigashira",
+         "stats": {"willpower": 70, "intellect": 92, "intuition": 95, "leadership": 65, "wealth_iq": 55, "empathy": 90}},
+        
+        # ETHER (Balanced/Mystical)
+        {"name": "Nikola Tesla", "trait": "The Mystic", "element": "Ether", "nakshatra": "Ardra",
+         "stats": {"willpower": 85, "intellect": 98, "intuition": 95, "leadership": 50, "wealth_iq": 30, "empathy": 60}},
     ]
 
     def __init__(self, api_key: str = None):
@@ -144,24 +168,38 @@ class LLMEngine:
             archetype_name = archetype_data[0]
             archetype_desc = archetype_data[1]
             
-            # ============= 5. CELEBRITY MATCHING (Multi-Variable) =============
-            # Score based on Element + Nakshatra match
+            # ============= 5. CELEBRITY MATCHING (Stat-Based Similarity) =============
+            # Calculate similarity score based on stat difference (lower = better match)
+            user_stats = {
+                "willpower": willpower, "intellect": intellect, "intuition": intuition,
+                "leadership": leadership, "wealth_iq": wealth_iq, "empathy": empathy
+            }
+            
             best_match = self.CELEBRITY_DB[0]
-            best_score = 0
+            best_similarity = float('inf')
+            
             for celeb in self.CELEBRITY_DB:
-                score = 0
+                celeb_stats = celeb.get("stats", {})
+                if not celeb_stats:
+                    continue
+                    
+                # Euclidean distance across all 6 stats
+                distance = 0
+                for stat_name in user_stats:
+                    user_val = user_stats[stat_name]
+                    celeb_val = celeb_stats.get(stat_name, 70)
+                    distance += (user_val - celeb_val) ** 2
+                
+                # Add element bonus (favor same element)
                 if celeb["element"] == element:
-                    score += 30
-                if celeb.get("nakshatra") == moon_nakshatra:
-                    score += 50  # Nakshatra match is strongest
-                if score > best_score:
-                    best_score = score
+                    distance -= 500  # Significant bonus for element match
+                
+                if distance < best_similarity:
+                    best_similarity = distance
                     best_match = celeb
             
-            # If no strong match, pick random from element pool
-            if best_score < 30:
-                pool = [c for c in self.CELEBRITY_DB if c["element"] == element]
-                best_match = random.choice(pool) if pool else self.CELEBRITY_DB[0]
+            # Calculate match percentage (inverse of distance, normalized)
+            match_pct = max(0, min(99, int(100 - (best_similarity ** 0.5) / 2)))
             
             # ============= 6. DASHA-AWARE ADVICE =============
             dasha_planet = current_dasha.get("planet", "Unknown")
