@@ -12,6 +12,7 @@ class LLMEngine:
         Generates a cosmic narrative using deterministic logic and template synthesis.
         Zero external dependencies.
         """
+        try:
             # 1. Safe Extraction Helper
             def _safe_extract(item, default_name, default_desc):
                 if isinstance(item, dict):
