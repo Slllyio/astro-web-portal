@@ -174,8 +174,13 @@ def calculate_numerology(dob):
 @app.route('/generate', methods=['POST'])
 def generate_report():
     try:
-        data = request.get_json()
-        dob_str = data.get('dob')
+        # Support both JSON (API) and Form Data (Browser)
+        if request.is_json:
+            data = request.get_json()
+            dob_str = data.get('dob')
+        else:
+            dob_str = request.form.get('dob')
+
         if not dob_str:
             return jsonify({"error": "Date of birth is required"}), 400
         
