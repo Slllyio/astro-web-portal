@@ -117,18 +117,11 @@ class AstrologicalInterpreter:
         pass
 
     def __init__(self):
-        # Initialize LLM Engine
+        # Initialize Native AI Engine (No API Key required)
         from .llm_engine import LLMEngine
-        import os
-        # Prioritize Groq, fallback to OpenAI if needed (flexible)
-        api_key = os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
         
-        self.llm = None
-        if api_key:
-            try:
-                self.llm = LLMEngine(api_key)
-            except Exception as e:
-                print(f"LLM Init Failed: {e}")
+        # Always available
+        self.llm = LLMEngine()
 
     # Future Major Transits (Hardcoded for Demo Accuracy)
     # Source: Standard Ephemeris
